@@ -70,13 +70,11 @@ bot.command("stocks", async ctx => {
   try {
     const res = await Stocks(CONFIG_STOCKS, HEADERS);
     const entries = [...res.entries()].sort();
-    console.log(entries.sort());
     if ([...res.keys()].length === 0) {
       await ctx.replyWithHTML("Нет отправлений");
     } else {
       let count = entries.reduce(
         (acc, item) =>
-          // console.log("ss", item[0].slice(0, 7), acc, item[1][2]);
           item[0].slice(0, 7) == "shtori0" ? acc + item[1][2] : acc + 0,
         0
       );
