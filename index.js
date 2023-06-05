@@ -1,70 +1,30 @@
 const { Telegraf } = require("telegraf");
 
+const {
+  HEADERS,
+  CONFIG_ORDERS,
+  CONFIG_STOCKS,
+  CONFIG_DELIVERED,
+} = require("./api/CONFIGS.js");
+
 const Orders = require("./services/orders.service");
 const Stocks = require("./services/stocks.service");
+const Delivered = require("./services/delivered.service");
+
 require("dotenv").config();
 
-const HEADERS = {
-  "Client-Id": process.env.CLIENT_ID,
-  "Api-Key": process.env.API_KEY,
-  "Content-Type": "application/json",
-};
-
-const CONFIG_ORDERS = {
-  dir: "ASC",
-  filter: {
-    cutoff_from: "2023-05-24T14:15:22Z",
-    cutoff_to: "2023-12-31T14:15:22Z",
-    delivery_method_id: [],
-    provider_id: [],
-    status: "awaiting_packaging",
-    warehouse_id: [],
-  },
-  limit: 100,
-  offset: 0,
-  with: {
-    analytics_data: true,
-    barcodes: true,
-    financial_data: true,
-    translit: true,
-  },
-};
-
-const CONFIG_STOCKS = {
-  filter: {
-    offer_id: [
-      "shtori001",
-      "shtori002",
-      "shtori004",
-      "shtori006",
-      "shtori007",
-      "shtoriRogozhka1",
-      "shtoriRogozhka2",
-      "shtoriRogozhka3",
-      "shtoriRogozhka4",
-      "shtoriRogozhka5",
-      "shtoriRogozhka6",
-      "blekaut1",
-      "blekaut11",
-      "blekaut2",
-      "blekaut12",
-      "blekaut3",
-      "blekaut13",
-      "blekaut4",
-      "blekaut14",
-      "blekaut5",
-      "blekaut15",
-      "blekaut6",
-      "blekaut16",
-    ],
-    visibility: "ALL",
-  },
-  last_id: "",
-  limit: 100,
-};
-
 const bot = new Telegraf(process.env.BOT_TOKEN);
-bot.start(ctx => ctx.reply("Welcome"));
+
+bot.start(ctx => ctx.reply("ss"));
+
+bot.command("test", async ctx => {
+  try {
+    const res = await Delivered(CONFIG_DELIVERED, HEADERS);
+   // console.log(res);
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 bot.command("stocks", async ctx => {
   try {
